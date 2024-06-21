@@ -6,7 +6,7 @@ services:
     ports:
     - "718:718"
     environment:
-      REGISTRY_HTTP_ADDR=0.0.0.0:718
+      REGISTRY_HTTP_ADDR: 0.0.0.0:718
       REGISTRY_AUTH: htpasswd
       REGISTRY_AUTH_HTPASSWD_REALM: Registry
       REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.password
