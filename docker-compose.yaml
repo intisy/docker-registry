@@ -17,14 +17,14 @@ services:
     volumes:
     - ./auth:/auth
     - ./registry-data:/registry-data
-  docker-registry-ui:
-    container_name: docker-registry-ui
-    image: konradkleine/docker-registry-frontend:v2
-    restart: always
-    links:
-    - docker-registry:docker-registry
-    ports:
-    - 719:443
-    environment:
-      ENV_DOCKER_REGISTRY_HOST: docker-registry
-      ENV_DOCKER_REGISTRY_PORT: 718
+  # docker-registry-ui:
+  #   container_name: docker-registry-ui
+  #   image: konradkleine/docker-registry-frontend:v2
+  #   restart: always
+  #   links:
+  #   - docker-registry:docker-registry
+  #   ports:
+  #   - 719:443
+  #   environment:
+  #     ENV_DOCKER_REGISTRY_HOST: docker-registry
+  #     ENV_DOCKER_REGISTRY_PORT: 718
