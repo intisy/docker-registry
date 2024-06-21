@@ -6,7 +6,7 @@ services:
         container_name: hub.kubernetesway.in
         image: registry
         ports:
-            - 718:443
+            - 443:443
         environment:
           - REGISTRY_HTTP_ADDR=0.0.0.0:443
           - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/server.crt 
@@ -19,10 +19,10 @@ services:
         container_name: docker-registry-ui
         image: konradkleine/docker-registry-frontend:v2
         ports:
-            - 719:443
+            - 8443:443
         environment:
             ENV_DOCKER_REGISTRY_HOST: hub.kubernetesway.in
-            ENV_DOCKER_REGISTRY_PORT: 718
+            ENV_DOCKER_REGISTRY_PORT: 443
             ENV_DOCKER_REGISTRY_USE_SSL: 1
             ENV_USE_SSL: 1
         volumes:
