@@ -4,7 +4,7 @@ root_password=$1
 
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
-sudo mkdir registry certs
+sudo mkdir registry auth
 sudo docker run --rm --entrypoint htpasswd registry:2 -Bbn root "$root_password" > ~/docker-registry/auth/registry.password
 sudo docker run -d -p 718:5000 --network host --restart=always --name registry \
 -e REGISTRY_AUTH="htpasswd" \
