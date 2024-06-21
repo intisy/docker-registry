@@ -6,6 +6,7 @@ sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir registry auth
 cd auth
+sudo apt install apache2-utils -y
 htpasswd -cB registry.htpasswd root root
 cd ..
 sudo docker run -d -p 5000:5000 --restart=always --name docker-registry \
