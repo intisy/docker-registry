@@ -4,8 +4,7 @@ Install
 ```
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
-sudo mkdir registry-data
-sudo mkdir auth
+sudo mkdir registry-data auth
 cd auth
 sudo apt install apache2-utils -y
 sudo htpasswd -b -c registry.password adminuser password
