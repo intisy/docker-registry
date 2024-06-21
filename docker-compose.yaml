@@ -8,13 +8,14 @@ services:
         ports:
             - 443:443
         environment:
-          - REGISTRY_HTTP_ADDR=0.0.0.0:443
-          - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/server.crt 
-          - REGISTRY_HTTP_TLS_KEY=/certs/server.key 
-        restart: always
+          REGISTRY_AUTH: htpasswd
+          REGISTRY_AUTH_HTPASSWD_REALM: Registry
+          REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.password
+          REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /registry-data
         volumes:
-            - ./volume:/var/lib/registry
-            - ./certs:/certs
+          - ./auth:/auth
+          - ./registry-data:/registry-data
+        restart: always
     docker-registry-ui:
         container_name: docker-registry-ui
         image: konradkleine/docker-registry-frontend:v2
@@ -23,8 +24,3 @@ services:
         environment:
             ENV_DOCKER_REGISTRY_HOST: hub.kubernetesway.in
             ENV_DOCKER_REGISTRY_PORT: 443
-            ENV_DOCKER_REGISTRY_USE_SSL: 1
-            ENV_USE_SSL: 1
-        volumes:
-           - ./certs/server.crt:/etc/apache2/server.crt:ro
-           - ./certs/server.key:/etc/apache2/server.key:ro
