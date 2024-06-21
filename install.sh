@@ -12,6 +12,7 @@ cd ..
 sudo docker run -d -p 5000:5000 --restart=always --name docker-registry \
   -e REGISTRY_AUTH=htpasswd \
   -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/auth.htpasswd \
+  -e REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY="/registry" \
   -v ./auth:/auth \
   -v ./registry:/registry \
   registry:2.7
