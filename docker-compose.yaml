@@ -20,4 +20,6 @@ services:
     ports:
     - 719:443
     environment:
+      ENV_DOCKER_REGISTRY_HOST: localhost
       ENV_DOCKER_REGISTRY_PORT: 718
+      ENV_USE_SSL: no
