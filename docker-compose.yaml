@@ -24,5 +24,6 @@ services:
       ENV_DOCKER_REGISTRY_PORT: 718
       REGISTRY_AUTH_HTPASSWD_REALM: Registry
       REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.password
+      ENV_USE_SSL: no
     volumes:
     - ./auth:/auth
