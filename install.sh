@@ -12,7 +12,8 @@ sudo docker run -d -p 5000:5000 --network host --restart=always --name docker-re
 -e REGISTRY_AUTH_HTPASSWD_PATH="/auth/registry.password" \
 -e REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY="/registry" \
 -v ./registry:/registry \
--v ./auth:/auth registry:2
+-v ./auth:/auth \
+registry:2
 docker run --name docker-registry-ui \
   -d --network host --restart=always \
   -e ENV_DOCKER_REGISTRY_HOST=127.0.0.1 \
