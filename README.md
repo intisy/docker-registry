@@ -9,5 +9,5 @@ Remove
 ---------
 
 ```
-curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/uninstall.sh | bash -s
+curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/deinstall.sh | bash -s
 ```
