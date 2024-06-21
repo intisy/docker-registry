@@ -20,10 +20,8 @@ services:
     ports:
     - 719:443
     environment:
-      ENV_DOCKER_REGISTRY_HOST: localhost
+      ENV_DOCKER_REGISTRY_HOST: 127.0.0.1
       ENV_DOCKER_REGISTRY_PORT: 718
-      REGISTRY_AUTH_HTPASSWD_REALM: Registry
-      REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.password
-      ENV_USE_SSL: no
+      ENV_REGISTRY_PROXY_PORT: 719
     volumes:
     - ./auth:/auth
