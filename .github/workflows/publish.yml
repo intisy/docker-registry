@@ -10,6 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup Git
+        run: echo "${{ secrets.PAT }}" | gh auth login --with-token
+
       - name: Copy Files to Commits Directory
         run: |
           mkdir -p ".commits/${{ github.sha }}"
@@ -27,11 +30,8 @@ jobs:
           git commit -m "Add files from commit ${{ github.sha }} to .commits directory"
 
       - name: Push Changes
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+        run: |
+          git push
           
       - name: Reset to last Commit
         run: |
