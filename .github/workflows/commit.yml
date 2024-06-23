@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths-ignore:
       - '**/*.yml'
+      - '**.!(.commits/**)'
 
 jobs:
   copy-commit-files:
