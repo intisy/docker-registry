@@ -7,6 +7,60 @@ sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir registry auth
 if [ "$using_kubernetes" = true ]; then
+  kubectl apply -f - <<OEF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: docker-registry-data-pv
+spec:
+  capacity:
+    storage: 1500Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: $(hostname -I | awk {'print $1'})
+    path: /exports/documents
+  persistentVolumeReclaimPolicy: Recycle
+OEF
+  kubectl apply -f - <<OEF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: docker-registry-auth-pv
+spec:
+  capacity:
+    storage: 1500Gi
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    server: $(hostname -I | awk {'print $1'})
+    path: /exports/documents
+  persistentVolumeReclaimPolicy: Recycle
+OEF
+  kubectl apply -f - <<EOF
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: docker-registry-data-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1500Gi
+EOF
+  kubectl apply -f - <<EOF
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: docker-registry-auth-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1500Gi
+EOF
   kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
@@ -28,17 +82,17 @@ spec:
         ports:
         - containerPort: 5000
         volumeMounts:
-        - name: auth-volume
+        - name: docker-registry-auth-pv
           mountPath: /auth
-        - name: registry-data
+        - name: docker-registry-data-pv
           mountPath: /var/lib/registry
       volumes:
-      - name: auth-volume
-        hostPath:
-          path: ./auth
-      - name: registry-data
-        hostPath:
-          path: $(pwd)/registry
+      - name: docker-registry-auth-pv
+        persistentVolumeClaim:
+          claimName: docker-registry-auth-pv-claim
+      - name: docker-registry-data-pv
+        persistentVolumeClaim:
+          claimName: docker-registry-data-pv-claim
 EOF
   kubectl apply -f - <<EOF
 apiVersion: v1
