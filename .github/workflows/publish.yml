@@ -22,6 +22,10 @@ jobs:
           git config --global user.email "actions@github.com"
           git commit -m "Add files from commit ${{ github.sha }} to .commits directory"
 
+      - name: List All Changes
+        run: |
+          git diff --name-only
+
       - name: Push Changes
         uses: actions/checkout@v2
         with:
