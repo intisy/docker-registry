@@ -7,6 +7,9 @@ using_ui=false
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir registry auth
+docker run \
+  --entrypoint htpasswd \
+  httpd:2 -Bbn root root > auth/htpasswd
 if [ "$using_kubernetes" = true ]; then
   kubectl apply -f - <<OEF
 apiVersion: v1
@@ -82,6 +85,13 @@ spec:
         image: registry:2.7
         ports:
         - containerPort: 5000
+        env:
+        - name: REGISTRY_AUTH
+          value: "htpasswd"
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: "Registry Realm"
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: "/auth/htpasswd"
         volumeMounts:
         - name: docker-registry-auth-pv
           mountPath: /auth
