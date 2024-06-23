@@ -8,6 +8,7 @@ curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/dei
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir registry auth
+touch ~/docker-registry/auth/htpasswd
 sudo docker run \
   --entrypoint htpasswd \
   httpd:2 -Bbn root root > ~/docker-registry/auth/htpasswd
