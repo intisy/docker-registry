@@ -1,6 +1,6 @@
 #!/bin/bash
 
-root_password=$1
+root_password=$1 #TODO
 using_kubernetes=true
 using_ui=false
 
