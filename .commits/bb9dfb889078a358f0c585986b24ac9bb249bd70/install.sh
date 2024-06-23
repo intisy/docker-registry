@@ -7,7 +7,7 @@ using_ui=false
 curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/deinstall.sh | bash -s
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
-sudo mkdir registry auth
+sudo mkdir data auth
 sudo docker run \
   --entrypoint htpasswd \
   httpd:2 -Bbn root root | sudo tee ./auth/htpasswd
@@ -20,12 +20,24 @@ metadata:
 spec:
   capacity:
     storage: 1500Gi
+  volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
-  nfs:
-    server: $(hostname -I | awk {'print $1'})
-    path: /exports/documents
-  persistentVolumeReclaimPolicy: Recycle
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  claimRef:
+    namespace: default
+    name: docker-registry-data-pv-claim
+  storageClassName: local-storage
+  local:
+    path: "$(pwd)/data"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - blizzity2
 OEF
   kubectl apply -f - <<OEF
 apiVersion: v1
@@ -35,12 +47,24 @@ metadata:
 spec:
   capacity:
     storage: 1500Gi
+  volumeMode: Filesystem
   accessModes:
-    - ReadWriteOnce
-  nfs:
-    server: $(hostname -I | awk {'print $1'})
-    path: /exports/documents
-  persistentVolumeReclaimPolicy: Recycle
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  claimRef:
+    namespace: default
+    name: docker-registry-auth-pv-claim
+  storageClassName: local-storage
+  local:
+    path: "$(pwd)/auth"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - blizzity2
 OEF
   kubectl apply -f - <<EOF
 apiVersion: v1
