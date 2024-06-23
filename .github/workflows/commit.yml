@@ -24,7 +24,7 @@ jobs:
               rm -r .commits/
             fi
             mkdir -p ".commits/${{ github.sha }}"
-            cp "script/" ".commits/${{ github.sha }}/" 
+            cp "scripts/" ".commits/${{ github.sha }}/" 
             git add ".commits/${{ github.sha }}/"
           else
             exit 1
