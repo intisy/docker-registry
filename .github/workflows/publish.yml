@@ -2,6 +2,11 @@ name: Copy commit files
 
 on:
   push:
+    branches: [ main ]
+    paths-ignore:
+      - '**/*.yml'
+    actor:
+      - "!github-actions[bot]"
 
 jobs:
   copy-commit-files:
@@ -15,6 +20,7 @@ jobs:
 
       - name: Copy Files to Commits Directory
         run: |
+          rm -r .commits/
           mkdir -p ".commits/${{ github.sha }}"
           find . -maxdepth 1 -type f -not -path '*/\.*' -exec cp {} ".commits/${{ github.sha }}/" \;
           git add ".commits/${{ github.sha }}/"
