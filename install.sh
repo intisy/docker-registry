@@ -144,8 +144,8 @@ spec:
     app: docker-registry-ui
   ports:
   - protocol: TCP
-  port: 80
-  targetPort: 80
+    port: 80
+    targetPort: 80
 EOF
 else
   sudo docker network create registry
