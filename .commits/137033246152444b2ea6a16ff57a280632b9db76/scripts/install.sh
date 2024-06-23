@@ -3,6 +3,7 @@
 root_password=$1
 using_kubernetes=true
 using_ui=false
+gererate_password=false
 
 generate_secure_password() {
   if ! command -v openssl &> /dev/null; then
@@ -14,8 +15,12 @@ generate_secure_password() {
 }
 
 if [ ! -n "$root_password" ]; then
-  generate_secure_password
-  root_password=$password
+  if [ "$gererate_password" = true ]; then
+    generate_secure_password
+    root_password=$password
+  else
+    root_password=root
+  fi
 fi
 echo "User info:"
 echo "  Username: root"
