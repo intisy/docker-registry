@@ -4,13 +4,30 @@ root_password=$1
 using_kubernetes=true
 using_ui=false
 
+generate_secure_password() {
+  if ! command -v openssl &> /dev/null; then
+    echo "Error: OpenSSL not found. Secure password generation unavailable."
+    return 1
+  fi
+  length=20
+  password=$(openssl rand -base64 $length | tr -dc 'A-Za-z0-9')
+}
+
+if [ ! -n "$root_password" ]; then
+  generate_secure_password
+  root_password=$password
+fi
+echo "User info:"
+echo "  Username: root"
+echo "  Password: $root_password"
+
 curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/deinstall.sh | bash -s
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir data auth
 sudo docker run \
   --entrypoint htpasswd \
-  httpd:2 -Bbn root root | sudo tee ./auth/htpasswd
+  httpd:2 -Bbn root $root_password | sudo tee ./auth/htpasswd
 if [ "$using_kubernetes" = true ]; then
   kubectl apply -f - <<OEF
 apiVersion: v1
