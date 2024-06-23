@@ -2,7 +2,7 @@
 
 root_password=$1
 using_kubernetes=true
-using_ui=true
+using_ui=false
 
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
