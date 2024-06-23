@@ -2,12 +2,12 @@ Install
 ---------
 
 ```
-curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/installer.sh | bash -s
+curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/run.sh | bash -s install
 ```
 
 Remove
 ---------
 
 ```
-curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/deinstall.sh | bash -s
+curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/run.sh | bash -s deinstall
 ```
