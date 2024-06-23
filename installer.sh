@@ -3,12 +3,12 @@
 args=$@
 
 execute() {
+  substring="The requested URL returned error"
   sha=$(curl -sSL https://api.github.com/repos/WildePizza/docker-registry/commits?per_page=2 | jq -r '.[1].sha')
   url="https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/install.shh"
   echo "Executing: $url"
-  curl -fsSL $url | bash -s $args
-  echo $?
-  if [[ $? -ne 0 ]]; then
+  output=$(curl -fsSL $url | bash -s $args)
+  if [[ $output =~ $substring ]]; then
     execute
   fi
 }
