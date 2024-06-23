@@ -112,7 +112,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: docker-registry-ui
-  namespace: registry
 spec:
   replicas: 1
   selector:
