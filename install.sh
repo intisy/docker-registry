@@ -4,6 +4,7 @@ root_password=$1
 using_kubernetes=true
 using_ui=false
 
+curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/deinstall.sh | bash -s
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir registry auth
