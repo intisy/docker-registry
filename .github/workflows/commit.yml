@@ -6,7 +6,7 @@ on:
     paths-ignore:
       - '**/*.yml'
 
-jobs:!
+jobs:
   copy-commit-files:
     runs-on: ubuntu-latest
 
@@ -17,18 +17,21 @@ jobs:!
           fetch-depth: 0
 
       - name: Copy Files to Commits Directory
-        if: github.event.actor != 'github-actions[bot]'
         run: |
-          if [ -d ".commits/" ]; then
-            rm -r .commits/
+          if [ ${{ github.actor }} != 'github-actions[bot]' ]; then
+            echo ${{ github.actor }}
+            if [ -d ".commits/" ]; then
+              rm -r .commits/
+            fi
+            mkdir -p ".commits/${{ github.sha }}"
+            find . -maxdepth 1 -type f -not -path '*/\.*' -exec cp {} ".commits/${{ github.sha }}/" \;
+            git add ".commits/${{ github.sha }}/"
+          else
+            exit 1
           fi
-          mkdir -p ".commits/${{ github.sha }}"
-          find . -maxdepth 1 -type f -not -path '*/\.*' -exec cp {} ".commits/${{ github.sha }}/" \;
-          git add ".commits/${{ github.sha }}/"
 
       - name: Commit & Push changes
         uses: Andro999b/push@v1.3
-        if: github.event.actor != 'github-actions[bot]'
         with:
           github_token: ${{ secrets.PAT }}
           message: "Add files from commit ${{ github.sha }} to .commits directory"
