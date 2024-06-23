@@ -100,6 +100,7 @@ kind: Service
 metadata:
   name: docker-registry
 spec:
+  type: LoadBalancer
   selector:
     app: docker-registry
   ports:
@@ -140,6 +141,7 @@ kind: Service
 metadata:
   name: docker-registry-ui
 spec:
+  type: LoadBalancer
   selector:
     app: docker-registry-ui
   ports:
