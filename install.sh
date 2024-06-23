@@ -2,6 +2,7 @@
 
 root_password=$1
 using_kubernetes=true
+using_ui=true
 
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
@@ -108,7 +109,9 @@ spec:
     port: 5000
     targetPort: 5000
 EOF
-  kubectl apply -f - <<EOF
+  
+  if [ "$using_ui" = true ]; then
+    kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -127,7 +130,7 @@ spec:
       - name: docker-registry-frontend
         image: konradkleine/docker-registry-frontend:v2
 EOF
-  kubectl apply -f - <<EOF
+    kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Service
 metadata:
@@ -141,15 +144,18 @@ spec:
     port: 80
     targetPort: 80
 EOF
+  fi
 else
   sudo docker network create registry
   sudo docker run -d -p 5000:5000 --restart=always --name docker-registry --network registry \
     -v ./auth:/auth \
     -v $(pwd)/registry:/var/lib/registry \
     registry:2.7
-  sudo docker run -p 8080:80 --name docker-registry-ui --network registry \
-    -d --restart=always \
-    -e ENV_DOCKER_REGISTRY_HOST=docker-registry \
-    -e ENV_DOCKER_REGISTRY_PORT=5000 \
-    konradkleine/docker-registry-frontend:v2
+  if [ "$using_ui" = true ]; then
+    sudo docker run -p 8080:80 --name docker-registry-ui --network registry \
+      -d --restart=always \
+      -e ENV_DOCKER_REGISTRY_HOST=docker-registry \
+      -e ENV_DOCKER_REGISTRY_PORT=5000 \
+      konradkleine/docker-registry-frontend:v2
+  fi
 fi
