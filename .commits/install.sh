@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "123"
 root_password=$1
 using_kubernetes=true
 using_ui=false
