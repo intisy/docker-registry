@@ -8,8 +8,7 @@ curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/dei
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir registry auth
-sudo touch ~/docker-registry/auth/htpasswd
-echo $(sudo docker run --entrypoint htpasswd httpd:2 -Bbn root root)
+sudo echo $(sudo docker run --entrypoint htpasswd httpd:2 -Bbn root root) > ~/docker-registry/auth/htpasswd
 if [ "$using_kubernetes" = true ]; then
   kubectl apply -f - <<OEF
 apiVersion: v1
