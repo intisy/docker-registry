@@ -112,28 +112,20 @@ EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: docker-registry-ui
+  name: docker-registry-frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: docker-registry-ui
+      app: docker-registry-frontend
   template:
     metadata:
       labels:
-        app: docker-registry-ui
+        app: docker-registry-frontend
     spec:
       containers:
-      - name: docker-registry-ui
+      - name: docker-registry-frontend
         image: konradkleine/docker-registry-frontend:v2
-        ports:
-        - containerPort: 80
-        env:
-        - name: ENV_DOCKER_REGISTRY_HOST
-          value: docker-registry
-        - name: ENV_DOCKER_REGISTRY_PORT
-          value: "5000"
-      restartPolicy: Always
 EOF
   kubectl apply -f - <<EOF
 apiVersion: v1
