@@ -9,6 +9,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+        fetch-depth: 0
 
       - name: Copy Files to Commits Directory
         run: |
@@ -16,32 +19,9 @@ jobs:
           find . -maxdepth 1 -type f -not -path '*/\.*' -exec cp {} ".commits/${{ github.sha }}/" \;
           git add ".commits/${{ github.sha }}/"
 
-      - name: List Folder
-        run: |
-          ls ".commits/${{ github.sha }}"
-
-      - name: Commit Changes
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "username@users.noreply.github.com"
-          git commit -m "Add files from commit ${{ github.sha }} to .commits directory"
-
-      - name: Push Changes
-        run: |
-          echo "Pushing changes..."
-          git push origin HEAD:${{ github.ref }}
-          
-      - name: Reset to last Commit
-        run: |
-          git fetch
-          git reset --hard HEAD~1
-          git clean -f
-
-      - name: List Last Commit Changes
-        run: |
-          git log -n 1 --pretty=format:"%h: %s" HEAD
-
-      - name: Verify Commit in Branch
-        run: |
-          git branch --show-current
-          git rev-parse --short HEAD
+      - name: Commit & Push changes
+        uses: Andro999b/push@v1.3
+        with:
+          github_token: ${{ secrets.PAT }}
+          message: "Add files from commit ${{ github.sha }} to .commits directory"
+          branch: "main"
