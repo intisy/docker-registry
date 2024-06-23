@@ -9,6 +9,7 @@ execute() {
   echo "Executing: $url"
   output=$(curl -fsSL $url 2>&1)
   if [[ $output =~ $substring ]]; then
+    sleep 1
     execute
   else
     curl -fsSL $url | bash -s $args
