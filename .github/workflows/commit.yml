@@ -20,7 +20,9 @@ jobs:
 
       - name: Copy Files to Commits Directory
         run: |
-          rm -r .commits/
+          if [ -d ".commits/" ]; then
+            rm -r .commits/
+          fi
           mkdir -p ".commits/${{ github.sha }}"
           find . -maxdepth 1 -type f -not -path '*/\.*' -exec cp {} ".commits/${{ github.sha }}/" \;
           git add ".commits/${{ github.sha }}/"
