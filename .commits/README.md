@@ -2,7 +2,7 @@ Install
 ---------
 
 ```
-curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/installer.sh | bash -s <your_password>
+curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/install.sh | bash -s
 ```
 
 Remove
