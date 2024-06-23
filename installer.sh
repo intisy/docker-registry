@@ -11,6 +11,7 @@ execute() {
   if [[ $output =~ $substring ]]; then
     execute
   else
+    echo $output
     echo $output | bash -s $args
   fi
 }
