@@ -10,7 +10,7 @@ cd ~/docker-registry
 sudo mkdir registry auth
 sudo docker run \
   --entrypoint htpasswd \
-  httpd:2 -Bbn root root > ./auth/htpasswd
+  httpd:2 -Bbn root root | sudo tee ./auth/htpasswd
 if [ "$using_kubernetes" = true ]; then
   kubectl apply -f - <<OEF
 apiVersion: v1
