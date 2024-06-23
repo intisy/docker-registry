@@ -2,10 +2,15 @@
 
 root_password=$1
 using_kubernetes=true
+using_ui=false
 
+curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/deinstall.sh | bash -s
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir registry auth
+sudo docker run \
+  --entrypoint htpasswd \
+  httpd:2 -Bbn root root > auth/htpasswd
 if [ "$using_kubernetes" = true ]; then
   kubectl apply -f - <<OEF
 apiVersion: v1
@@ -81,6 +86,13 @@ spec:
         image: registry:2.7
         ports:
         - containerPort: 5000
+        env:
+        - name: REGISTRY_AUTH
+          value: "htpasswd"
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: "Registry Realm"
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: "/auth/htpasswd"
         volumeMounts:
         - name: docker-registry-auth-pv
           mountPath: /auth
@@ -108,7 +120,9 @@ spec:
     port: 5000
     targetPort: 5000
 EOF
-  kubectl apply -f - <<EOF
+  
+  if [ "$using_ui" = true ]; then
+    kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -135,7 +149,7 @@ spec:
           value: "5000"
       restartPolicy: Always
 EOF
-  kubectl apply -f - <<EOF
+    kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Service
 metadata:
@@ -149,15 +163,18 @@ spec:
     port: 80
     targetPort: 80
 EOF
+  fi
 else
   sudo docker network create registry
   sudo docker run -d -p 5000:5000 --restart=always --name docker-registry --network registry \
     -v ./auth:/auth \
     -v $(pwd)/registry:/var/lib/registry \
     registry:2.7
-  sudo docker run -p 8080:80 --name docker-registry-ui --network registry \
-    -d --restart=always \
-    -e ENV_DOCKER_REGISTRY_HOST=docker-registry \
-    -e ENV_DOCKER_REGISTRY_PORT=5000 \
-    konradkleine/docker-registry-frontend:v2
+  if [ "$using_ui" = true ]; then
+    sudo docker run -p 8080:80 --name docker-registry-ui --network registry \
+      -d --restart=always \
+      -e ENV_DOCKER_REGISTRY_HOST=docker-registry \
+      -e ENV_DOCKER_REGISTRY_PORT=5000 \
+      konradkleine/docker-registry-frontend:v2
+  fi
 fi
