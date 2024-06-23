@@ -1,4 +1,4 @@
-name: Get Commit Hash
+name: Copy commit files
 
 on:
   push:
@@ -29,5 +29,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
-  - name: Verify Commit in Branch
+      - name: Verify Commit in Branch
         run: git branch --show-current
