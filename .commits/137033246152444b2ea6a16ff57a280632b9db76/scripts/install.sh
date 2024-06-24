@@ -22,7 +22,7 @@ if [ ! -n "$root_password" ]; then
     root_password=root
   fi
 fi
-echo "User info:"
+echo "|-- User info: --|"
 echo "  Username: root"
 echo "  Password: $root_password"
 
