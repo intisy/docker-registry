@@ -30,6 +30,7 @@ echo "|----------------|"
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir data auth
+touch data/test
 sudo docker run \
   --entrypoint htpasswd \
   httpd:2 -Bbn root $root_password | sudo tee ./auth/htpasswd
