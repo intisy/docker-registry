@@ -164,7 +164,7 @@ spec:
   ports:
   - protocol: TCP
     port: 718
-    targetPort: 718
+    targetPort: 5000
 EOF
   
   if [ "$using_ui" = true ]; then
