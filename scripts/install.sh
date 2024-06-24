@@ -14,6 +14,7 @@ generate_secure_password() {
   password=$(openssl rand -base64 $length | tr -dc 'A-Za-z0-9')
 }
 
+curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/run.sh | bash -s deinstall
 if [ ! -n "$root_password" ]; then
   if [ "$gererate_password" = true ]; then
     generate_secure_password
@@ -26,8 +27,6 @@ echo "|-- User info: --|"
 echo "  Username: root"
 echo "  Password: $root_password"
 echo "|----------------|"
-
-curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/deinstall.sh | bash -s
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir data auth
