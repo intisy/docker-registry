@@ -186,14 +186,12 @@ spec:
     spec:
       containers:
       - name: docker-registry-ui
-        image: konradkleine/docker-registry-frontend:v2
+        image: joxit/docker-registry-ui:main
         ports:
         - containerPort: 80
         env:
-        - name: ENV_DOCKER_REGISTRY_HOST
-          value: docker-registry
-        - name: ENV_DOCKER_REGISTRY_PORT
-          value: "718"
+        - name: REGISTRY_URL
+          value: "http://docker-registry:718"
       restartPolicy: Always
 EOF
     kubectl apply -f - <<EOF
