@@ -205,7 +205,7 @@ spec:
     app: docker-registry-ui
   ports:
   - protocol: TCP
-    port: 80
+    port: 719
     targetPort: 80
 EOF
   fi
