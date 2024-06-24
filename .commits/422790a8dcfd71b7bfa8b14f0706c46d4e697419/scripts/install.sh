@@ -2,7 +2,7 @@
 
 root_password=$1
 using_kubernetes=true
-using_ui=false
+using_ui=true
 gererate_password=false
 
 generate_secure_password() {
