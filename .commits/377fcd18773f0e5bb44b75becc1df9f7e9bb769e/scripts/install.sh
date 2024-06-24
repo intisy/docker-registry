@@ -25,6 +25,7 @@ fi
 echo "|-- User info: --|"
 echo "  Username: root"
 echo "  Password: $root_password"
+echo "|----------------|"
 
 curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/deinstall.sh | bash -s
 sudo mkdir ~/docker-registry
