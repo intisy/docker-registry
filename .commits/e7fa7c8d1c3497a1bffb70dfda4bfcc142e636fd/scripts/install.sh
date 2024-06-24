@@ -209,6 +209,10 @@ spec:
     targetPort: 80
 EOF
   fi
+  echo "waiting for registry to be ready..." >&2
+  while [ $(kubectl get deployment docker-registry | grep -c "1/1") != "1" ]; do
+      sleep 1
+  done
 else
   sudo docker network create registry
   sudo docker run -d -p 718:718 --restart=always --name docker-registry --network registry \
