@@ -174,6 +174,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: docker-registry-ui
+  labels:
+    app: docker-registry-ui
 spec:
   replicas: 1
   selector:
@@ -199,6 +201,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: docker-registry-ui
+  labels:
+    app: docker-registry-ui
 spec:
   type: LoadBalancer
   selector:
