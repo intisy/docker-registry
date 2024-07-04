@@ -139,13 +139,6 @@ spec:
       labels:
         app: docker-registry
     spec:
-      livenessProbe:
-        httpGet:
-          path: /healthz
-          port: 8080
-        initialDelaySeconds: 15
-        periodSeconds: 20
-        failureThreshold: 3
       restartPolicy: Always
       containers:
       - name: docker-registry
