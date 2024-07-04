@@ -14,7 +14,7 @@ generate_secure_password() {
   length=20
   password=$(openssl rand -base64 $length | tr -dc 'A-Za-z0-9')
 }
-curl -fsSL https://raw.githubusercontent.com/WildePizza/mysql-kubernetes/HEAD/.commits/$sha/scripts/deinstall.sh | bash -s
+curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/scripts/deinstall.sh | bash -s
 if [ ! -n "$root_password" ]; then
   if [ "$gererate_password" = true ]; then
     generate_secure_password
