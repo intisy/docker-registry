@@ -1,6 +1,7 @@
 #!/bin/bash
 
-root_password=$1
+sha=$1
+root_password=$2
 using_kubernetes=true
 using_ui=true
 gererate_password=false
