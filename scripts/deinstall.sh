@@ -7,6 +7,7 @@ if [ "$using_kubernetes" = true ]; then
   kubectl delete service docker-registry --grace-period=0 --force
   kubectl delete deployment docker-registry --grace-period=0 --force
   kubectl delete deployment docker-registry-ui --grace-period=0 --force
+  kubectl delete pods -l app=docker-registry --grace-period=0 --force
   kubectl delete pvc docker-registry-data-pv-claim --grace-period=0 --force
   kubectl delete pvc docker-registry-auth-pv-claim --grace-period=0 --force
   kubectl delete pv docker-registry-data-pv --grace-period=0 --force
