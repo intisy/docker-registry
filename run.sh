@@ -13,7 +13,7 @@ execute() {
     sleep 1
     execute
   else
-    curl -fsSL $url | bash -s $arg
+    curl -fsSL $url | bash -s $sha $arg
   fi
 }
 execute
