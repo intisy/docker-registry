@@ -3,8 +3,8 @@ name: Copy commit files
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'scripts/**'
+    paths-ignore:
+      - '.commits/**'
 
 jobs:
   copy-commit-files:
