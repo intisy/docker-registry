@@ -146,6 +146,18 @@ spec:
         ports:
         - containerPort: 718
         env:
+        - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin
+          value: "http://docker-registry-ui:719"
+        - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Methods
+          value: "HEAD,GET,OPTIONS,DELETE"
+        - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Credentials
+          value: "true"
+        - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Headers
+          value: "Authorization,Accept,Cache-Control"
+        - name: REGISTRY_HTTP_HEADERS_Access-Control-Expose-Headers
+          value: "Docker-Content-Digest"
+        - name: REGISTRY_STORAGE_DELETE_ENABLED
+          value: "true"
         - name: REGISTRY_AUTH
           value: "htpasswd"
         - name: REGISTRY_AUTH_HTPASSWD_REALM
