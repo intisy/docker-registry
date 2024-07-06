@@ -42,7 +42,7 @@ echo "|----------------|"
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir data auth config
-sudo bash -c 'cat > ./config/config2.yml << EOF_FILE
+sudo bash -c 'cat > ./config/config.yml << EOF_FILE
 version: 0.1
 log:
   fields:
@@ -64,10 +64,11 @@ http:
     Access-Control-Max-Age: [1728000]
     Access-Control-Allow-Credentials: [true]
     Access-Control-Expose-Headers: ['Docker-Content-Digest']
-auth:
-  htpasswd:
-    realm: basic-realm
-    path: /var/lib/registry
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
 EOF_FILE'
 sudo docker run \
   --entrypoint htpasswd \
@@ -221,17 +222,17 @@ spec:
         volumeMounts:
         - name: docker-registry-auth-pv
           mountPath: /auth
-#        - name: docker-registry-config-pv
-#          mountPath: /etc/docker/registry
+        - name: docker-registry-config-pv
+          mountPath: /etc/docker/registry
         - name: docker-registry-data-pv
           mountPath: /var/lib/registry
       volumes:
       - name: docker-registry-auth-pv
         persistentVolumeClaim:
           claimName: docker-registry-auth-pv-claim
-#      - name: docker-registry-config-pv
-#        persistentVolumeClaim:
-#          claimName: docker-registry-config-pv-claim
+      - name: docker-registry-config-pv
+        persistentVolumeClaim:
+          claimName: docker-registry-config-pv-claim
       - name: docker-registry-data-pv
         persistentVolumeClaim:
           claimName: docker-registry-data-pv-claim
