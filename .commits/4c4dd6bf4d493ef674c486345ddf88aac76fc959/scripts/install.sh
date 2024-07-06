@@ -58,7 +58,7 @@ http:
   addr: :5000
   headers:
     X-Content-Type-Options: [nosniff]
-    Access-Control-Allow-Origin: ['http://docker-registry-ui:719'] # docker-registry-ui
+    Access-Control-Allow-Origin: ['http://localhost:719'] # docker-registry-ui
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
     Access-Control-Allow-Headers: ['Authorization', 'Accept']
     Access-Control-Max-Age: [1728000]
@@ -219,8 +219,8 @@ spec:
         - name: REGISTRY_AUTH_HTPASSWD_PATH
           value: "/auth/htpasswd"
         volumeMounts:
-        - name: docker-registry-auth-pv
-          mountPath: /auth
+#        - name: docker-registry-auth-pv
+#          mountPath: /auth
         - name: docker-registry-config-pv
           mountPath: /etc/docker/registry
         - name: docker-registry-data-pv
@@ -277,6 +277,8 @@ spec:
         env:
         - name: REGISTRY_URL
           value: "http://docker-registry:718"
+        - name: SINGLE_REGISTRY
+          value: "true"
       restartPolicy: Always
 EOF
     kubectl apply -f - <<EOF
