@@ -64,11 +64,10 @@ http:
     Access-Control-Max-Age: [1728000]
     Access-Control-Allow-Credentials: [true]
     Access-Control-Expose-Headers: ['Docker-Content-Digest']
-health:
-  storagedriver:
-    enabled: true
-    interval: 10s
-    threshold: 3
+auth:
+  htpasswd:
+    realm: basic-realm
+    path: /var/lib/registry
 EOF_FILE'
 sudo docker run \
   --entrypoint htpasswd \
