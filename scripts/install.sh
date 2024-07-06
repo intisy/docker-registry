@@ -221,17 +221,17 @@ spec:
         volumeMounts:
         - name: docker-registry-auth-pv
           mountPath: /auth
-        - name: docker-registry-config-pv
-          mountPath: /etc/docker/registry
+#        - name: docker-registry-config-pv
+#          mountPath: /etc/docker/registry
         - name: docker-registry-data-pv
           mountPath: /var/lib/registry
       volumes:
       - name: docker-registry-auth-pv
         persistentVolumeClaim:
           claimName: docker-registry-auth-pv-claim
-      - name: docker-registry-config-pv
-        persistentVolumeClaim:
-          claimName: docker-registry-config-pv-claim
+#      - name: docker-registry-config-pv
+#        persistentVolumeClaim:
+#          claimName: docker-registry-config-pv-claim
       - name: docker-registry-data-pv
         persistentVolumeClaim:
           claimName: docker-registry-data-pv-claim
