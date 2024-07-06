@@ -147,7 +147,7 @@ spec:
         - containerPort: 718
         env:
         - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin
-          value: "[http://docker-registry-ui:719]"
+          value: "[http://192.168.178.171:719]"
         - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Methods
           value: "[HEAD,GET,OPTIONS,DELETE]"
         - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Credentials
