@@ -58,7 +58,7 @@ http:
   addr: :5000
   headers:
     X-Content-Type-Options: [nosniff]
-    Access-Control-Allow-Origin: ['http://localhost:719'] # docker-registry-ui
+    Access-Control-Allow-Origin: ['http://192.168.178.156:719/'] # docker-registry-ui
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
     Access-Control-Allow-Headers: ['Authorization', 'Accept']
     Access-Control-Max-Age: [1728000]
