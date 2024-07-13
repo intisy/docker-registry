@@ -8,6 +8,7 @@ echo2() {
   echo -e "\033[0;33m$@\033[0m"
 }
 
+echo2 "Setting up using options: $@"
 if [ "$using_kubernetes" = true ]; then
   echo2 "Deleting Kubernetes Docker registry!"
   kubectl delete service docker-registry --grace-period=0 --force
