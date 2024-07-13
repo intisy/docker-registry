@@ -30,8 +30,7 @@ wait_until_ready() {
   fi
 }
 echo2 "Setting up using options: $@"
-wait_until_ready https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/scripts/deinstall.sh
-curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/scripts/deinstall.sh | bash -s
+curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/run.sh | bash -s deinstall
 if [ ! -n "$root_password" ]; then
   if [ "$gererate_password" = true ]; then
     generate_secure_password
