@@ -14,7 +14,7 @@ execute() {
   echo "Executing: $url"
   output=$(curl -fsSL $url 2>&1)
   if [[ $output =~ $substring ]]; then
-    curl -fsSL $url | bash -s $sha $arg $using_kubernetes $using_ui $using_docker_ui_test $gererate_password
+    curl -fsSL $url | bash -s $sha $using_kubernetes $using_ui $using_docker_ui_test $gererate_password $arg
   else
     sleep 1
     execute
