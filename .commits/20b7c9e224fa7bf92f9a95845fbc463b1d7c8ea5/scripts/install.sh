@@ -2,10 +2,10 @@
 
 sha=$1
 root_password=$2
-using_kubernetes=true
-using_ui=true
-using_docker_ui_test=true
-gererate_password=false
+using_kubernetes=$3
+using_ui=$4
+using_docker_ui_test=$5
+gererate_password=$6
 
 generate_secure_password() {
   if ! command -v openssl &> /dev/null; then
