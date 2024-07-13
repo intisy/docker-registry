@@ -8,7 +8,7 @@ using_docker_ui_test=$5
 gererate_password=$6
 
 echo2() {
-  echo -e "\033[0;33m$1"
+  echo -e "\033[0;33m$1\033[0m"
 }
 generate_secure_password() {
   if ! command -v openssl &> /dev/null; then
