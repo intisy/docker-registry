@@ -30,9 +30,7 @@ if [ "$using_kubernetes" = true ]; then
 else
   echo2 "Deleting Docker registry!"
   sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=registry:2.7 --format="{{.ID}}"))
-  echo2 "test1"
   if [ "$using_ui" = true ]; then
-    echo2 "test"
     ui=true
   fi
 fi
