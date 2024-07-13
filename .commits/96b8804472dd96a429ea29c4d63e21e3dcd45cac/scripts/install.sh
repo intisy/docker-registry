@@ -7,10 +7,12 @@ using_ui=$4
 using_docker_ui_test=$5
 gererate_password=$6
 
-echo "Setting up using options: $@"
+echo2() {
+  echo "\033[0;33m$1"
+}
 generate_secure_password() {
   if ! command -v openssl &> /dev/null; then
-    echo "Error: OpenSSL not found. Secure password generation unavailable."
+    echo2 "Error: OpenSSL not found. Secure password generation unavailable."
     return 1
   fi
   length=20
@@ -20,13 +22,14 @@ wait_until_ready() {
   url=$1
   substring1="The requested URL returned error"
   substring2="Could not resolve host: raw.githubusercontent.com"
-  echo "Executing: $url"
+  echo2 "Executing: $url"
   output=$(curl -fsSL $url 2>&1)
   if [[ $output =~ $substring1 || $output =~ $substring2 ]]; then
     sleep 1
     wait_until_ready
   fi
 }
+echo2 "Setting up using options: $@"
 wait_until_ready https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/scripts/deinstall.sh
 curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/scripts/deinstall.sh | bash -s
 if [ ! -n "$root_password" ]; then
@@ -37,10 +40,10 @@ if [ ! -n "$root_password" ]; then
     root_password=root
   fi
 fi
-echo "|-- User info: --|"
-echo "  Username: root"
-echo "  Password: $root_password"
-echo "|----------------|"
+echo2 "|-- User info: --|"
+echo2 "  Username: root"
+echo2 "  Password: $root_password"
+echo2 "|----------------|"
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir data auth config
@@ -76,7 +79,7 @@ sudo docker run \
   --entrypoint htpasswd \
   httpd:2 -Bbn root $root_password | sudo tee ./auth/htpasswd
 if [ "$using_kubernetes" = true ]; then
-  echo Setting up Kubernetes Docker registry!
+  echo2 Setting up Kubernetes Docker registry!
   kubectl apply -f - <<OEF
 apiVersion: v1
 kind: PersistentVolume
@@ -259,7 +262,7 @@ EOF
     if [ "$using_docker_ui_test" = true ]; then
       ui=true
     else
-      echo Setting up Kubernetes Docker registry ui!
+      echo2 Setting up Kubernetes Docker registry ui!
       kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
@@ -307,12 +310,12 @@ spec:
 EOF
     fi
   fi
-  echo "waiting for registry to be ready..." >&2
+  echo2 "waiting for registry to be ready..." >&2
   while [ $(kubectl get deployment docker-registry | grep -c "1/1") != "1" ]; do
       sleep 1
   done
 else
-  echo Setting up Docker registry!
+  echo2 Setting up Docker registry!
   sudo docker run -d -p 718:718 --restart=always --name docker-registry \
     -v ./auth:/auth \
     -v $(pwd)/registry:/var/lib/registry \
@@ -322,7 +325,7 @@ else
   fi
 fi
 if [ "$ui" = true ]; then
-  echo Setting up Docker registry ui!
+  echo2 Setting up Docker registry ui!
   sudo docker run -p 719:80 --name docker-registry-ui \
     -d --restart=always \
     -e SINGLE_REGISTRY=true \
