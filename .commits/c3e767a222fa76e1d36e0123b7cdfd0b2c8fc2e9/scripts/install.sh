@@ -7,6 +7,7 @@ using_ui=$4
 using_docker_ui_test=$5
 gererate_password=$6
 
+echo "Setting up using options: $@"
 generate_secure_password() {
   if ! command -v openssl &> /dev/null; then
     echo "Error: OpenSSL not found. Secure password generation unavailable."
