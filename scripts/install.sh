@@ -75,6 +75,7 @@ sudo docker run \
   --entrypoint htpasswd \
   httpd:2 -Bbn root $root_password | sudo tee ./auth/htpasswd
 if [ "$using_kubernetes" = true ]; then
+  echo Setting up Kubernetes Docker registry!
   kubectl apply -f - <<OEF
 apiVersion: v1
 kind: PersistentVolume
@@ -257,6 +258,7 @@ EOF
     if [ "$using_docker_ui_test" = true ]; then
       ui=true
     else
+      echo Setting up Kubernetes Docker registry ui!
       kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
@@ -309,7 +311,7 @@ EOF
       sleep 1
   done
 else
-  sudo docker network create registry
+  echo Setting up Docker registry!
   sudo docker run -d -p 718:718 --restart=always --name docker-registry \
     -v ./auth:/auth \
     -v $(pwd)/registry:/var/lib/registry \
@@ -319,6 +321,7 @@ else
   fi
 fi
 if [ "$ui" = true ]; then
+  echo Setting up Docker registry ui!
   sudo docker run -p 719:80 --name docker-registry-ui \
     -d --restart=always \
     -e SINGLE_REGISTRY=true \
