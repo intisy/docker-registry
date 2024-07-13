@@ -4,6 +4,7 @@ sha=$1
 root_password=$2
 using_kubernetes=true
 using_ui=true
+using_docker_ui_test=true
 gererate_password=false
 
 generate_secure_password() {
@@ -58,7 +59,7 @@ http:
   addr: :5000
   headers:
     X-Content-Type-Options: [nosniff]
-    Access-Control-Allow-Origin: ['http://docker-registry-ui:719']
+    Access-Control-Allow-Origin: ['*']
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
     Access-Control-Allow-Headers: ['Authorization', 'Accept']
     Access-Control-Max-Age: [1728000]
@@ -253,7 +254,10 @@ spec:
 EOF
   
   if [ "$using_ui" = true ]; then
-    kubectl apply -f - <<EOF
+    if [ "$using_docker_ui_test" = true ]; then
+      ui=true
+    else
+      kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -282,7 +286,7 @@ spec:
           value: "true"
       restartPolicy: Always
 EOF
-    kubectl apply -f - <<EOF
+      kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Service
 metadata:
@@ -298,6 +302,7 @@ spec:
     port: 719
     targetPort: 80
 EOF
+    fi
   fi
   echo "waiting for registry to be ready..." >&2
   while [ $(kubectl get deployment docker-registry | grep -c "1/1") != "1" ]; do
@@ -305,15 +310,18 @@ EOF
   done
 else
   sudo docker network create registry
-  sudo docker run -d -p 718:718 --restart=always --name docker-registry --network registry \
+  sudo docker run -d -p 718:718 --restart=always --name docker-registry \
     -v ./auth:/auth \
     -v $(pwd)/registry:/var/lib/registry \
     registry:2.7
-  if [ "$using_ui" = true ]; then
-    sudo docker run -p 8080:80 --name docker-registry-ui --network registry \
-      -d --restart=always \
-      -e ENV_DOCKER_REGISTRY_HOST=docker-registry \
-      -e ENV_DOCKER_REGISTRY_PORT=718 \
-      konradkleine/docker-registry-frontend:v2
-  fi
+    if [ "$using_ui" = true ]; then
+      ui=true
+    fi
+fi
+if [ "$ui" = true ]; then
+  sudo docker run -p 719:80 --name docker-registry-ui \
+    -d --restart=always \
+    -e SINGLE_REGISTRY=true \
+    -e REGISTRY_URL=http://localhost:718 \
+    konradkleine/docker-registry-frontend:v2
 fi
