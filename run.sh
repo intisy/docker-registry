@@ -2,6 +2,10 @@
 
 action=$1
 arg=$2
+using_kubernetes=true
+using_ui=true
+using_docker_ui_test=true
+gererate_password=false
 
 execute() {
   substring="#!/bin/bash"
@@ -10,7 +14,7 @@ execute() {
   echo "Executing: $url"
   output=$(curl -fsSL $url 2>&1)
   if [[ $output =~ $substring ]]; then
-    curl -fsSL $url | bash -s $sha $arg
+    curl -fsSL $url | bash -s $sha $arg $using_kubernetes $using_ui $using_docker_ui_test $gererate_password
   else
     sleep 1
     execute
