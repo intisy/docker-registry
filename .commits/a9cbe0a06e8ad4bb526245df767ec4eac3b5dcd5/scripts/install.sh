@@ -314,9 +314,9 @@ else
     -v ./auth:/auth \
     -v $(pwd)/registry:/var/lib/registry \
     registry:2.7
-    if [ "$using_ui" = true ]; then
-      ui=true
-    fi
+  if [ "$using_ui" = true ]; then
+    ui=true
+  fi
 fi
 if [ "$ui" = true ]; then
   sudo docker run -p 719:80 --name docker-registry-ui \
