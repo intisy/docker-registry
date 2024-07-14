@@ -68,11 +68,10 @@ http:
     Access-Control-Max-Age: [1728000]
     Access-Control-Allow-Credentials: [true]
     Access-Control-Expose-Headers: ['Docker-Content-Digest']
-health:
-  storagedriver:
-    enabled: true
-    interval: 10s
-    threshold: 3
+auth:
+  htpasswd:
+    realm: basic-realm
+    path: /auth/htpasswd
 EOF_FILE'
 sudo docker run \
   --entrypoint htpasswd \
@@ -217,27 +216,20 @@ spec:
         image: registry:latest
         ports:
         - containerPort: 718
-        env:
-        - name: REGISTRY_AUTH
-          value: "htpasswd"
-        - name: REGISTRY_AUTH_HTPASSWD_REALM
-          value: "Registry Realm"
-        - name: REGISTRY_AUTH_HTPASSWD_PATH
-          value: "/auth/htpasswd"
         volumeMounts:
         - name: docker-registry-auth-pv
           mountPath: /auth
-        # - name: docker-registry-config-pv
-          # mountPath: /etc/docker/registry
+        - name: docker-registry-config-pv
+          mountPath: /etc/docker/registry
         - name: docker-registry-data-pv
           mountPath: /var/lib/registry
       volumes:
       - name: docker-registry-auth-pv
         persistentVolumeClaim:
           claimName: docker-registry-auth-pv-claim
-      # - name: docker-registry-config-pv
-        # persistentVolumeClaim:
-          # claimName: docker-registry-config-pv-claim
+      - name: docker-registry-config-pv
+        persistentVolumeClaim:
+          claimName: docker-registry-config-pv-claim
       - name: docker-registry-data-pv
         persistentVolumeClaim:
           claimName: docker-registry-data-pv-claim
