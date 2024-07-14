@@ -328,7 +328,7 @@ if [ "$ui" = true ]; then
   sudo docker run -d \
   --name ui \
   -p 719:80 \
-  -e REGISTRY_TITLE=Docker Registry \
+  -e REGISTRY_TITLE="Docker Registry" \
   -e REGISTRY_URL=http://localhost:718 \
   -e SINGLE_REGISTRY=true \
   joxit/docker-registry-ui:latest
