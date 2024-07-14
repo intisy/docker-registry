@@ -279,7 +279,7 @@ spec:
         - containerPort: 80
         env:
         - name: REGISTRY_URL
-          value: "http://docker-registry:718"
+          value: "http://$local_ip:718"
         - name: SINGLE_REGISTRY
           value: "true"
       restartPolicy: Always
