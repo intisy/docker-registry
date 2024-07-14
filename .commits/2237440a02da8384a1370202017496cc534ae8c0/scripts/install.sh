@@ -62,7 +62,7 @@ http:
   addr: :5000
   headers:
     X-Content-Type-Options: [nosniff]
-    Access-Control-Allow-Origin: ['http://localhost:719']
+    Access-Control-Allow-Origin: ['http://192.168.178.178:719']
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
     Access-Control-Allow-Headers: ['Authorization', 'Accept']
     Access-Control-Max-Age: [1728000]
@@ -321,7 +321,7 @@ if [ "$ui" = true ]; then
   --name ui \
   -p 719:80 \
   -e REGISTRY_TITLE="Docker Registry" \
-  -e REGISTRY_URL=http://localhost:718 \
+  -e REGISTRY_URL=http://192.168.178.178:718 \
   -e SINGLE_REGISTRY=true \
   joxit/docker-registry-ui:latest
 fi
