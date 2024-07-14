@@ -5,7 +5,7 @@ pat=$2
 arg=$3
 using_kubernetes=true
 using_ui=true
-using_docker_ui_test=true
+using_docker_ui_test=false
 gererate_password=false
 
 execute() {
