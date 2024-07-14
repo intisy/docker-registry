@@ -326,7 +326,7 @@ fi
 if [ "$ui" = true ]; then
   echo2 Setting up Docker registry ui!
   sudo docker run -d \
-  --name docker-registry-ui \
+  --name ui \
   -p 719:80 \
   -e REGISTRY_TITLE=Docker Registry \
   -e REGISTRY_URL=http://localhost:718 \
