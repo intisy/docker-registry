@@ -46,7 +46,7 @@ echo2 "|----------------|"
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir data auth config
-sudo bash -c 'cat > ./config/config.yml << EOF_FILE
+sudo bash -c "cat > ./config/config.yml << EOF_FILE
 version: 0.1
 log:
   fields:
@@ -62,17 +62,17 @@ http:
   addr: :5000
   headers:
     X-Content-Type-Options: [nosniff]
-    Access-Control-Allow-Origin: [\\'http://192.168.178.178:719\\']
-    Access-Control-Allow-Methods: [\\'HEAD\\', \\'GET\\', \\'OPTIONS\\', \\'DELETE\\']
-    Access-Control-Allow-Headers: [\\'Authorization\\', \\'Accept\\']
+    Access-Control-Allow-Origin: ['http://192.168.178.178:719']
+    Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
+    Access-Control-Allow-Headers: ['Authorization', 'Accept']
     Access-Control-Max-Age: [1728000]
     Access-Control-Allow-Credentials: [true]
-    Access-Control-Expose-Headers: [\\'Docker-Content-Digest\\']
+    Access-Control-Expose-Headers: ['Docker-Content-Digest']
 auth:
   htpasswd:
     realm: basic-realm
     path: /auth/htpasswd
-EOF_FILE'
+EOF_FILE"
 sudo docker run \
   --entrypoint htpasswd \
   httpd:2 -Bbn root $root_password | sudo tee ./auth/htpasswd
