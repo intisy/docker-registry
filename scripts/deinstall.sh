@@ -15,8 +15,10 @@ if [ "$using_kubernetes" = true ]; then
   kubectl delete deployment docker-registry --grace-period=0 --force
   kubectl delete pods -l app=docker-registry --grace-period=0 --force
   kubectl delete pvc docker-registry-data-pv-claim --grace-period=0 --force
+  kubectl delete pvc docker-registry-config-pv-claim --grace-period=0 --force
   kubectl delete pvc docker-registry-auth-pv-claim --grace-period=0 --force
   kubectl delete pv docker-registry-data-pv --grace-period=0 --force
+  kubectl delete pv docker-registry-config-pv --grace-period=0 --force
   kubectl delete pv docker-registry-auth-pv --grace-period=0 --force
   if [ "$using_ui" = true ]; then
     if [ "$using_docker_ui_test" = true ]; then
