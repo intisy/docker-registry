@@ -6,6 +6,7 @@ using_ui=$3
 using_docker_ui_test=$4
 gererate_password=$5
 root_password=$6
+local_ip=$(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d'/' -f1 | head -n 1)
 
 echo2() {
   echo -e "\033[0;33m$@\033[0m"
@@ -62,7 +63,7 @@ http:
   addr: :5000
   headers:
     X-Content-Type-Options: [nosniff]
-    Access-Control-Allow-Origin: ['http://localhost:719']
+    Access-Control-Allow-Origin: ['http://$local_ip:719']
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
     Access-Control-Allow-Headers: ['Authorization', 'Accept']
     Access-Control-Max-Age: [1728000]
