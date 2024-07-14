@@ -1,7 +1,8 @@
 #!/bin/bash
 
 action=$1
-arg=$2
+pat=$2
+arg=$3
 using_kubernetes=true
 using_ui=true
 using_docker_ui_test=true
@@ -14,7 +15,11 @@ execute() {
   echo "Executing: $url"
   output=$(curl -fsSL $url 2>&1)
   if [[ $output =~ $substring ]]; then
-    curl -fsSL $url | bash -s $sha $using_kubernetes $using_ui $using_docker_ui_test $gererate_password $arg
+    if [ -n "$pat" ]; then
+      curl -X GET -H "Authorization: Bearer $pat" -H "Content-Type: application/json" -fsSL $url | bash -s $sha $using_kubernetes $using_ui $using_docker_ui_test $gererate_password $arg
+    else
+      curl -fsSL $url | bash -s $sha $using_kubernetes $using_ui $using_docker_ui_test $gererate_password $arg
+    fi
   else
     sleep 1
     execute
