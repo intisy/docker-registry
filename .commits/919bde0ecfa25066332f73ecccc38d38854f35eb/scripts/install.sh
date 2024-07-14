@@ -325,10 +325,11 @@ else
 fi
 if [ "$ui" = true ]; then
   echo2 Setting up Docker registry ui!
-  # sudo docker run -p 719:80 --name docker-registry-ui \
-    # -d --restart=always \
-    # -e SINGLE_REGISTRY=true \
-    # -e REGISTRY_URL=http://localhost:718 \
-    # konradkleine/docker-registry-frontend:v2
-  sudo docker compose -f https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/yaml/ui.yml up
+  sudo docker run -d \
+  --name docker-registry-ui \
+  -p 719:80 \
+  -e REGISTRY_TITLE=Docker Registry \
+  -e REGISTRY_URL=http://localhost:718 \
+  -e SINGLE_REGISTRY=true \
+  joxit/docker-registry-ui:latest
 fi
