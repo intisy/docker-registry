@@ -62,12 +62,12 @@ http:
   addr: :5000
   headers:
     X-Content-Type-Options: [nosniff]
-    Access-Control-Allow-Origin: [\'http://192.168.178.178:719\']
-    Access-Control-Allow-Methods: [\'HEAD\', \'GET\', \'OPTIONS\', \'DELETE\']
-    Access-Control-Allow-Headers: [\'Authorization\', \'Accept\']
+    Access-Control-Allow-Origin: [\\'http://192.168.178.178:719\\']
+    Access-Control-Allow-Methods: [\\'HEAD\\', \\'GET\\', \\'OPTIONS\\', \\'DELETE\\']
+    Access-Control-Allow-Headers: [\\'Authorization\\', \\'Accept\\']
     Access-Control-Max-Age: [1728000]
     Access-Control-Allow-Credentials: [true]
-    Access-Control-Expose-Headers: [\'Docker-Content-Digest\']
+    Access-Control-Expose-Headers: [\\'Docker-Content-Digest\\']
 auth:
   htpasswd:
     realm: basic-realm
