@@ -330,5 +330,5 @@ if [ "$ui" = true ]; then
     # -e SINGLE_REGISTRY=true \
     # -e REGISTRY_URL=http://localhost:718 \
     # konradkleine/docker-registry-frontend:v2
-  sudo docker-compose -f https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/yaml/ui.yml up
+  sudo docker compose -f https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/yaml/ui.yml up
 fi
