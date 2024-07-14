@@ -249,7 +249,10 @@ spec:
     port: 718
     targetPort: 5000
 EOF
-  
+  echo2 "waiting for registry to be ready..." >&2
+  while [ $(kubectl get deployment docker-registry | grep -c "1/1") != "1" ]; do
+      sleep 1
+  done
   if [ "$using_ui" = true ]; then
     if [ "$using_docker_ui_test" = true ]; then
       ui=true
@@ -302,10 +305,6 @@ spec:
 EOF
     fi
   fi
-  echo2 "waiting for registry to be ready..." >&2
-  while [ $(kubectl get deployment docker-registry | grep -c "1/1") != "1" ]; do
-      sleep 1
-  done
 else
   echo2 Setting up Docker registry!
   sudo docker run -d -p 718:718 --restart=always --name docker-registry \
