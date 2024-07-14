@@ -322,7 +322,7 @@ if [ "$ui" = true ]; then
   --name ui \
   -p 719:80 \
   -e REGISTRY_TITLE="Docker Registry" \
-  -e REGISTRY_URL=http://192.168.178.178:718 \
+  -e REGISTRY_URL=http://localhost:718 \
   -e SINGLE_REGISTRY=true \
   joxit/docker-registry-ui:latest
 fi
