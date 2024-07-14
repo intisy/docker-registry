@@ -36,7 +36,7 @@ else
 fi
 if [ "$ui" = true ]; then
   echo2 "Deleting Docker registry ui!"
-  sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter joxit/docker-registry-ui:latest --format="{{.ID}}"))
+  sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=joxit/docker-registry-ui:latest --format="{{.ID}}"))
 fi
 
 sudo rm -r ~/docker-registry
