@@ -60,7 +60,7 @@ http:
   addr: :5000
   headers:
     X-Content-Type-Options: [nosniff]
-    Access-Control-Allow-Origin: ['http://$local_ip:719', 'http://localhost:718']
+    Access-Control-Allow-Origin: ['http://$local_ip:719']
     Access-Control-Allow-Methods: ['HEAD', 'GET', 'OPTIONS', 'DELETE']
     Access-Control-Allow-Headers: ['Authorization', 'Accept']
     Access-Control-Max-Age: [1728000]
@@ -214,13 +214,6 @@ spec:
         image: registry:latest
         ports:
         - containerPort: 718
-        env:
-        - name: REGISTRY_AUTH
-          value: "htpasswd"
-        - name: REGISTRY_AUTH_HTPASSWD_REALM
-          value: "basic-realm"
-        - name: REGISTRY_AUTH_HTPASSWD_PATH
-          value: "/auth/htpasswd"
         volumeMounts:
         - name: docker-registry-auth-pv
           mountPath: /auth
