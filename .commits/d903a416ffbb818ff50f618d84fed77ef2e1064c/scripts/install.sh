@@ -217,6 +217,13 @@ spec:
         image: registry:latest
         ports:
         - containerPort: 718
+        env:
+        - name: REGISTRY_AUTH
+          value: "htpasswd"
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: "basic-realm"
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: "/auth/htpasswd"
         volumeMounts:
         - name: docker-registry-auth-pv
           mountPath: /auth
