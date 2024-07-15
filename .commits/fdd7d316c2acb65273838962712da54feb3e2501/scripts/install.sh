@@ -100,7 +100,7 @@ spec:
         - key: node-role.kubernetes.io/control-plane
           operator: In
           values:
-          - true
+          - "true"
 OEF
   kubectl apply -f - <<OEF
 apiVersion: v1
@@ -126,8 +126,7 @@ spec:
       - matchExpressions:
         - key: node-role.kubernetes.io/control-plane
           operator: In
-          values:
-          - true
+          values:           - "true"
 OEF
   kubectl apply -f - <<OEF
 apiVersion: v1
@@ -153,8 +152,7 @@ spec:
       - matchExpressions:
         - key: node-role.kubernetes.io/control-plane
           operator: In
-          values:
-          - true
+          values:           - "true"
 OEF
   kubectl apply -f - <<EOF
 apiVersion: v1
