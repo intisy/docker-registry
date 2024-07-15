@@ -5,7 +5,8 @@ using_kubernetes=$2
 using_ui=$3
 using_docker_ui_test=$4
 gererate_password=$5
-root_password=$6
+username=$6
+password=$7
 local_ip=$(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d'/' -f1 | head -n 1)
 
 echo2() {
@@ -17,7 +18,7 @@ generate_secure_password() {
     return 1
   fi
   length=20
-  password=$(openssl rand -base64 $length | tr -dc 'A-Za-z0-9')
+  echo $(openssl rand -base64 $length | tr -dc 'A-Za-z0-9')
 }
 wait_until_ready() {
   url=$1
@@ -32,18 +33,14 @@ wait_until_ready() {
 }
 echo2 "Setting up using options: $@"
 curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/run.sh | bash -s deinstall
-if [ ! -n "$root_password" ]; then
+if [ ! -n "$password" ]; then
   if [ "$gererate_password" = true ]; then
-    generate_secure_password
-    root_password=$password
+    password=$(generate_secure_password)
   else
-    root_password=root
+    password=$username
   fi
+  echo2 "Using password: $password"
 fi
-echo2 "|-- User info: --|"
-echo2 "  Username: root"
-echo2 "  Password: $root_password"
-echo2 "|----------------|"
 sudo mkdir ~/docker-registry
 cd ~/docker-registry
 sudo mkdir data auth config
@@ -76,7 +73,7 @@ auth:
 EOF_FILE"
 sudo docker run \
   --entrypoint htpasswd \
-  httpd:2 -Bbn root $root_password | sudo tee ./auth/htpasswd
+  httpd:2 -Bbn $username $password | sudo tee ./auth/htpasswd
 if [ "$using_kubernetes" = true ]; then
   echo2 Setting up Kubernetes Docker registry!
   kubectl apply -f - <<OEF
