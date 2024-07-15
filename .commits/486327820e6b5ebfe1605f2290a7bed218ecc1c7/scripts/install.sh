@@ -41,8 +41,7 @@ if [ ! -n "$password" ]; then
   fi
   echo2 "Using password: $password"
 fi
-sudo mkdir ~/docker-registry
-cd ~/docker-registry
+cd /mnt/data/registry
 sudo mkdir data auth config
 sudo bash -c "cat > ./config/config.yml << EOF_FILE
 version: 0.1
