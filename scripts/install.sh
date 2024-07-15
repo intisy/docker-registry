@@ -98,10 +98,10 @@ spec:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: kubernetes.io/hostname
+        - key: node-role.kubernetes.io/control-plane
           operator: In
           values:
-          - blizzity2
+          - true
 OEF
   kubectl apply -f - <<OEF
 apiVersion: v1
@@ -125,10 +125,10 @@ spec:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: kubernetes.io/hostname
+        - key: node-role.kubernetes.io/control-plane
           operator: In
           values:
-          - blizzity2
+          - true
 OEF
   kubectl apply -f - <<OEF
 apiVersion: v1
@@ -152,10 +152,10 @@ spec:
     required:
       nodeSelectorTerms:
       - matchExpressions:
-        - key: kubernetes.io/hostname
+        - key: node-role.kubernetes.io/control-plane
           operator: In
           values:
-          - blizzity2
+          - true
 OEF
   kubectl apply -f - <<EOF
 apiVersion: v1
