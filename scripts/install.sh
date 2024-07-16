@@ -20,17 +20,6 @@ generate_secure_password() {
   length=20
   echo $(openssl rand -base64 $length | tr -dc 'A-Za-z0-9')
 }
-wait_until_ready() {
-  url=$1
-  substring1="The requested URL returned error"
-  substring2="Could not resolve host: raw.githubusercontent.com"
-  echo2 "Executing: $url"
-  output=$(curl -fsSL $url 2>&1)
-  if [[ $output =~ $substring1 || $output =~ $substring2 ]]; then
-    sleep 1
-    wait_until_ready
-  fi
-}
 echo2 "Setting up using options: $@"
 curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/run.sh | bash -s deinstall
 if [ ! -n "$password" ]; then
