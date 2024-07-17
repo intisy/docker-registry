@@ -1,8 +1,8 @@
 #!/bin/bash
 
-using_kubernetes=$2
-using_ui=$3
-using_docker_ui_test=$4
+using_kubernetes=$3
+using_ui=$4
+using_docker_ui_test=$5
 
 echo2() {
   echo -e "\033[0;33m$@\033[0m"
