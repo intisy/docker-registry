@@ -74,6 +74,26 @@ metadata:
 spec:
   capacity:
     storage: 1500Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  claimRef:
+    namespace: default
+    name: docker-registry-pv-claim
+  nfs:
+    server: nfs-server
+    path: /data/registry
+OEF
+  else
+    kubectl apply -f - <<OEF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: docker-registry-pv
+spec:
+  capacity:
+    storage: 1500Gi
   persistentVolumeReclaimPolicy: Delete
   claimRef:
     namespace: default
@@ -89,26 +109,6 @@ spec:
           operator: In
           values:
           - "true"
-OEF
-  else
-    kubectl apply -f - <<OEF
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: docker-registry-pv
-spec:
-  capacity:
-    storage: 1500Gi
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  claimRef:
-    namespace: default
-    name: docker-registry-pv-claim
-  nfs:
-    server: nfs-server
-    path: /data/registry
 OEF
   fi
   kubectl apply -f - <<EOF
