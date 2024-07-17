@@ -7,7 +7,7 @@ using_docker_ui_test=$4
 gererate_password=$5
 username=$6
 password=$7
-using_nfs=false
+using_nfs=$8
 local_ip=$(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d'/' -f1 | head -n 1)
 
 echo2() {
