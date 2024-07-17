@@ -83,7 +83,7 @@ spec:
     name: docker-registry-pv-claim
   nfs:
     server: nfs-server
-    path: /data/registry
+    path: /registry
 OEF
   else
     kubectl apply -f - <<OEF
