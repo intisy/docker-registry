@@ -57,7 +57,7 @@ http:
 auth:
   htpasswd:
     realm: basic-realm
-    path: /auth/htpasswd
+    path: /registry/auth/htpasswd
 EOF_FILE"
 sudo docker run \
   --entrypoint htpasswd \
@@ -68,7 +68,7 @@ if [ "$using_kubernetes" = true ]; then
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: docker-registry-data-pv
+  name: docker-registry-pv
 spec:
   capacity:
     storage: 1500Gi
@@ -78,102 +78,16 @@ spec:
   persistentVolumeReclaimPolicy: Delete
   claimRef:
     namespace: default
-    name: docker-registry-data-pv-claim
-  storageClassName: local-storage
-  local:
-    path: "$(pwd)/data"
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: node-role.kubernetes.io/control-plane
-          operator: In
-          values:
-          - "true"
-OEF
-  kubectl apply -f - <<OEF
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: docker-registry-config-pv
-spec:
-  capacity:
-    storage: 1500Gi
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  claimRef:
-    namespace: default
-    name: docker-registry-config-pv-claim
-  storageClassName: local-storage
-  local:
-    path: "$(pwd)/config"
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: node-role.kubernetes.io/control-plane
-          operator: In
-          values:
-          - "true"
-OEF
-  kubectl apply -f - <<OEF
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: docker-registry-auth-pv
-spec:
-  capacity:
-    storage: 1500Gi
-  volumeMode: Filesystem
-  accessModes:
-  - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  claimRef:
-    namespace: default
-    name: docker-registry-auth-pv-claim
-  storageClassName: local-storage
-  local:
-    path: "$(pwd)/auth"
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: node-role.kubernetes.io/control-plane
-          operator: In
-          values:
-          - "true"
+    name: docker-registry-pv-claim
+  nfs:
+    server: nfs-server
+    path: /data/registry
 OEF
   kubectl apply -f - <<EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: docker-registry-data-pv-claim
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1500Gi
-EOF
-  kubectl apply -f - <<EOF
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: docker-registry-config-pv-claim
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1500Gi
-EOF
-  kubectl apply -f - <<EOF
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: docker-registry-auth-pv-claim
+  name: docker-registry-pv-claim
 spec:
   accessModes:
     - ReadWriteOnce
@@ -200,25 +114,18 @@ spec:
       containers:
       - name: docker-registry
         image: registry:latest
+        env:
+        - name: REGISTRY_CONFIGURATION_PATH
+          value: "/registry/config/"
         ports:
         - containerPort: 718
         volumeMounts:
-        - name: docker-registry-auth-pv
-          mountPath: /auth
-        - name: docker-registry-config-pv
-          mountPath: /etc/docker/registry
-        - name: docker-registry-data-pv
-          mountPath: /var/lib/registry
+        - name: docker-registry-pv
+          mountPath: /registry
       volumes:
-      - name: docker-registry-auth-pv
+      - name: docker-registry-pv
         persistentVolumeClaim:
-          claimName: docker-registry-auth-pv-claim
-      - name: docker-registry-config-pv
-        persistentVolumeClaim:
-          claimName: docker-registry-config-pv-claim
-      - name: docker-registry-data-pv
-        persistentVolumeClaim:
-          claimName: docker-registry-data-pv-claim
+          claimName: docker-registry-pv-claim
 EOF
   kubectl apply -f - <<EOF
 apiVersion: v1
