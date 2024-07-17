@@ -7,6 +7,7 @@ using_docker_ui_test=$4
 gererate_password=$5
 username=$6
 password=$7
+using_nfs=false
 local_ip=$(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d'/' -f1 | head -n 1)
 
 echo2() {
@@ -64,7 +65,33 @@ sudo docker run \
   httpd:2 -Bbn $username $password | sudo tee ./auth/htpasswd
 if [ "$using_kubernetes" = true ]; then
   echo2 Setting up Kubernetes Docker registry!
-  kubectl apply -f - <<OEF
+  if [ "$using_nfs" = true ]; then
+    kubectl apply -f - <<OEF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: docker-registry-pv
+spec:
+  capacity:
+    storage: 1500Gi
+  persistentVolumeReclaimPolicy: Delete
+  claimRef:
+    namespace: default
+    name: docker-registry-pv-claim
+  storageClassName: local-storage
+  local:
+    path: "$(pwd)/data"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: node-role.kubernetes.io/control-plane
+          operator: In
+          values:
+          - "true"
+OEF
+  else
+    kubectl apply -f - <<OEF
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -83,6 +110,7 @@ spec:
     server: nfs-server
     path: /data/registry
 OEF
+  fi
   kubectl apply -f - <<EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
