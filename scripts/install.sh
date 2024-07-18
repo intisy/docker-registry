@@ -25,7 +25,6 @@ generate_secure_password() {
 }
 echo2 "Setting up using options: $args"
 sudo bash kubernetes-center/run.sh repo=docker-registry raw_args="$args" action=deinstall pat=$pat sha=$sha
-curl -fsSL https://raw.githubusercontent.com/WildePizza//HEAD/run.sh | bash -s deinstall $args
 if [ ! -n "$password" ]; then
   if [ "$gererate_password" = true ]; then
     password=$(generate_secure_password)
