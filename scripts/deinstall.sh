@@ -1,8 +1,8 @@
 #!/bin/bash
 
-using_kubernetes=$3
-using_ui=$4
-using_docker_ui_test=$5
+using_kubernetes=$5
+using_ui=$6
+using_docker_ui_test=$7
 
 echo2() {
   echo -e "\033[0;33m$@\033[0m"
@@ -41,4 +41,4 @@ if [ "$ui" = true ]; then
   sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=joxit/docker-registry-ui:latest --format="{{.ID}}"))
 fi
 
-sudo rm -r ~/docker-registry
+sudo rm -rfv /mnt/data/docker-registry/*
