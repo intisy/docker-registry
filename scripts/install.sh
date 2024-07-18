@@ -1,13 +1,15 @@
 #!/bin/bash
 
 args=$@
-username=$1
-password=$2
-using_kubernetes=$3
-using_ui=$4
-using_docker_ui_test=$5
-gererate_password=$6
-using_nfs=$7
+pat=$1
+sha=$2
+username=$3
+password=$4
+using_kubernetes=$5
+using_ui=$6
+using_docker_ui_test=$7
+gererate_password=$8
+using_nfs=$9
 local_ip=$(ip addr show | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | cut -d'/' -f1 | head -n 1)
 
 echo2() {
@@ -22,7 +24,8 @@ generate_secure_password() {
   echo $(openssl rand -base64 $length | tr -dc 'A-Za-z0-9')
 }
 echo2 "Setting up using options: $args"
-curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/run.sh | bash -s deinstall $args
+sudo bash kubernetes-center/run.sh repo=docker-registry raw_args="$args" action=deinstall pat=$pat sha=$sha
+curl -fsSL https://raw.githubusercontent.com/WildePizza//HEAD/run.sh | bash -s deinstall $args
 if [ ! -n "$password" ]; then
   if [ "$gererate_password" = true ]; then
     password=$(generate_secure_password)
