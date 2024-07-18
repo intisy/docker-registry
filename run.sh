@@ -10,8 +10,8 @@ gererate_password=false
 
 execute() {
   substring="#!/bin/bash"
-  sha=$(curl -sSL https://api.github.com/repos/WildePizza/docker-registry/commits?per_page=2 | jq -r '.[1].sha')
-  url="https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/.commits/$sha/scripts/$action.sh"
+  sha=$(curl -sSL https://api.github.com/repos/WildePizza/docker-registry/commits | jq -r '.[1].sha')
+  url="https://raw.githubusercontent.com/WildePizza/docker-registry/$sha/scripts/$action.sh"
   echo "Executing: $url"
   output=$(curl -fsSL $url 2>&1)
   if [[ $output =~ $substring ]]; then
