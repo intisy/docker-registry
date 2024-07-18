@@ -2,12 +2,12 @@ Install
 ---------
 
 ```
-curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/run.sh | bash -s install
+bash kubernetes-center/run.sh repo=docker-registry action=install pat=$PAT args="username=username password=password"
 ```
 
 Deinstall
 ---------
 
 ```
-curl -fsSL https://raw.githubusercontent.com/WildePizza/docker-registry/HEAD/run.sh | bash -s deinstall
+bash kubernetes-center/run.sh repo=docker-registry action=deinstall pat=$PAT
 ```
