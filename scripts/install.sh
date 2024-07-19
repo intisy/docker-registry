@@ -84,7 +84,7 @@ spec:
     namespace: default
     name: docker-registry-pv-claim
   nfs:
-    server: nfs-server
+    server: nfs-server.default.svc.cluster.local
     path: /registry
 OEF
   else
