@@ -112,7 +112,7 @@ OEF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: docker-registry-pvc
+  name: docker-registry-pv-claim
 spec:
   accessModes:
     - ReadWriteMany
