@@ -76,13 +76,8 @@ metadata:
 spec:
   capacity:
     storage: 1500Gi
-  volumeMode: Filesystem
   accessModes:
-  - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  claimRef:
-    namespace: default
-    name: docker-registry-pv-claim
+    - ReadWriteMany
   nfs:
     server: nfs-server.default.svc.cluster.local
     path: /registry
