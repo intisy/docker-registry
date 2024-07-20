@@ -78,6 +78,9 @@ spec:
     storage: 1500Gi
   accessModes:
     - ReadWriteMany
+  claimRef:
+    namespace: default
+    name: docker-registry-pv-claim
   nfs:
     server: $local_ip
     path: /registry
