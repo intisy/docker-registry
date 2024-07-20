@@ -79,7 +79,7 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    server: nfs-server.default.svc.cluster.local
+    server: $local_ip
     path: /registry
 OEF
   else
